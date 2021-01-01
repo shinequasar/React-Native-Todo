@@ -1,26 +1,60 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal } from 'react-native';
+import {AntDesign} from "@expo/vector-icons";
+import colors from './Colors';
+import tempData from './tempData';
+import TodoList from './components/TodoList';
+import AddListModal from './components/AddListModal'
 
 export default class App extends React.Component {
+  state = {
+    addTodoVisible: false
+  };
+
+  toggleAddTodoModal(){
+    this.setState({addTodoVisible: !this.state.addTodoVisible});
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{padding: 10, fontSize: 42}}>ToDo list</Text>
-        <Text style={{padding: 10, fontSize: 22}}>일단 투두리스트부터 만들고</Text>
-        <Text style={{padding: 10, fontSize: 22}}>변형해봐야겠다</Text>
-        <Text  style={{padding: 10, fontSize: 15}}>shinequasar</Text>
-        <TextInput
-            style={{height: 40}}
-            placeholder="Type here!"
-            // onChangeText={(text) => this.setState({text})}
-            // value={this.state.text}
-          />
-        <StatusBar style="auto" />
+        <Modal 
+          animationType="slide" 
+          visible={this.state.addTodoVisible} 
+          onRequestClose={()=> this.toggleAddTodoModal()}
+        >
+            <AddListModal closeModal={() => this.toggleAddTodoModal()}/>
+        </Modal>
+          <Text style={styles.add}>소연아 까먹지말자</Text>
+            <View style={{flexDirection: "row"}}>
+              <View style={styles.divider}/>
+                <Text style={styles.title}>
+                  Todo <Text style={{fontWeight:"300", color: colors.blue}}>Lists</Text>
+                </ Text>
+              <View style={styles.divider}/>
+            </View>
+
+          <View style={{marginVertical:48}}>
+            <TouchableOpacity style={styles.addList} onPress={() => this.toggleAddTodoModal()}>
+                <AntDesign name="plus" size={16} color={"#24A6D9"} />
+            </TouchableOpacity>
+            <Text style={styles.add}>Add List</Text>
+          </View>
+
+          <View style={{height:275, paddingLeft:32}}>
+              <FlatList 
+                data={tempData} 
+                keyExtractor={item=>item.name} 
+                horizontal={true} 
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item})=> ( <TodoList list={item}/>
+                )}
+              />
+          </View>
       </View>
     );
   }
-  
 }
 
 const styles = StyleSheet.create({
@@ -30,4 +64,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  divider:{
+    backgroundColor:"#A7CBD9",
+    height:1,
+    flex:1,
+    alignSelf: "center"
+  },
+  title:{
+    fontSize: 38,
+    fontWeight:"800",
+    color: "#2D3436",
+    paddingHorizontal:64
+  },
+  addList:{
+    borderWidth:2,
+    borderColor: "#2D3436",
+    borderRadius: 4,
+    padding: 16,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  add: {
+    color: "#24A6D9",
+    fontWeight:"600",
+    fontSize:14,
+    marginTop: 8
+  }
 });
