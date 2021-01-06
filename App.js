@@ -15,6 +15,9 @@ export default class App extends React.Component {
     this.setState({addTodoVisible: !this.state.addTodoVisible});
   }
 
+  renderList = list => {
+    return <TodoList list={list} />
+  }
 
   render() {
     return (
@@ -36,7 +39,10 @@ export default class App extends React.Component {
             </View>
 
           <View style={{marginVertical:48}}>
-            <TouchableOpacity style={styles.addList} onPress={() => this.toggleAddTodoModal()}>
+            <TouchableOpacity 
+              style={styles.addList} 
+              onPress={() => this.toggleAddTodoModal()}
+            >
                 <AntDesign name="plus" size={16} color={"#24A6D9"} />
             </TouchableOpacity>
             <Text style={styles.add}>Add List</Text>
@@ -48,8 +54,7 @@ export default class App extends React.Component {
                 keyExtractor={item=>item.name} 
                 horizontal={true} 
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item})=> ( <TodoList list={item}/>
-                )}
+                renderItem={({item})=> this.renderList(item)}
               />
           </View>
       </View>
