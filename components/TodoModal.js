@@ -5,9 +5,7 @@ import colors from '../Colors';
 
 export default class TodoModal extends React.Component {
     state ={
-        name : this.props.list.name,
-        color: this.props.list.color,
-        todos: this.props.list.todos
+        newTodo: ""
     };
 
     renderTodo = todo => {
@@ -34,8 +32,10 @@ export default class TodoModal extends React.Component {
     };
 
   render() {
-    const taskCount = this.state.todos.length;
-    const completedCount = this.state.todos.filter(todo => todo.completed).length;
+    const list = this.props.list
+
+    const taskCount = list.todos.length;
+    const completedCount = list.todos.filter(todo => todo.completed).length;
 
 
     return (
@@ -46,9 +46,9 @@ export default class TodoModal extends React.Component {
         >
             <AntDesign name="close" size={24} color={colors.black} />
         </TouchableOpacity>
-        <View style={[styles.section, styles.header,{borderBottomColor: this.state.color}]}>
+        <View style={[styles.section, styles.header,{borderBottomColor:list.color}]}>
             <View>
-                <Text style={styles.title}>{this.state.name}</Text>
+                <Text style={styles.title}>{list.name}</Text>
                 <Text style={styles.taskCount}>
                     끝난항목 : {completedCount}개  /  전체항목 :  {taskCount}개 
                 </Text>
@@ -56,7 +56,7 @@ export default class TodoModal extends React.Component {
         </View>
         <View style={[styles.section, {flex:3}]}>
             <FlatList
-                data={this.state.todos}
+                data={list.todos}
                 renderItem={({item}) => this.renderTodo(item)}
                 keyExtractor={item => item.title}
                 contentContainerStyle={{paddingHorizontal:32, paddingVertical:64}}

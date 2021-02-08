@@ -5,15 +5,15 @@ const tempData = [
         color: "#24A6D9",
         todos:[
             {
-                title:"영화보러가기",
+                title:"강원도 여행가기",
                 completed: true
             },
             {
-                title:"고양이보러가기",
+                title:"제주도 여행가기",
                 completed:false
             },
             {
-                title:"버블밀크티 마시기",
+                title:"인천 바다구경가기",
                 completed: true
             }
         ]
@@ -24,7 +24,7 @@ const tempData = [
         todos:[
             {
                 title:"영화보러가기",
-                completed:true
+                completed:false
             },
             {
                 title:"고양이보러가기",

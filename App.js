@@ -8,7 +8,8 @@ import AddListModal from './components/AddListModal'
 
 export default class App extends React.Component {
   state = {
-    addTodoVisible: false
+    addTodoVisible: false,
+    lists: tempData
   };
 
   toggleAddTodoModal(){
@@ -19,6 +20,10 @@ export default class App extends React.Component {
     return <TodoList list={list} />
   }
 
+  addList = list => {
+    this.setState({lists:[...this.state.lists,{...list, id: this.state.lists.length +1, todos:[]}]});
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -27,13 +32,13 @@ export default class App extends React.Component {
           visible={this.state.addTodoVisible} 
           onRequestClose={()=> this.toggleAddTodoModal()}
         >
-            <AddListModal closeModal={() => this.toggleAddTodoModal()}/>
+            <AddListModal closeModal={() => this.toggleAddTodoModal()} addList={this.addList}/>
         </Modal>
           <Text style={styles.add}>소연아 까먹지말자</Text>
             <View style={{flexDirection: "row"}}>
               <View style={styles.divider}/>
                 <Text style={styles.title}>
-                  Todo <Text style={{fontWeight:"300", color: colors.blue}}>Lists</Text>
+                  오늘의 <Text style={{fontWeight:"300", color: colors.blue}}>할 일</Text>
                 </ Text>
               <View style={styles.divider}/>
             </View>
@@ -45,12 +50,12 @@ export default class App extends React.Component {
             >
                 <AntDesign name="plus" size={16} color={"#24A6D9"} />
             </TouchableOpacity>
-            <Text style={styles.add}>Add List</Text>
+            <Text style={styles.add}>추가하기</Text>
           </View>
 
           <View style={{height:275, paddingLeft:32}}>
               <FlatList 
-                data={tempData} 
+                data={this.state.lists} 
                 keyExtractor={item=>item.name} 
                 horizontal={true} 
                 showsHorizontalScrollIndicator={false}
@@ -91,8 +96,9 @@ const styles = StyleSheet.create({
   },
   add: {
     color: "#24A6D9",
-    fontWeight:"600",
+    fontWeight:"700",
     fontSize:14,
-    marginTop: 8
+    marginTop: 8,
+    paddingBottom:5
   }
 });
